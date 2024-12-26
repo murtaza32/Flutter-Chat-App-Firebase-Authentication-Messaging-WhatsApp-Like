@@ -51,34 +51,34 @@ late String? initialRoute;
 
 Future<void> initApp() async {
   // Compare Versions
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  DocumentSnapshot newestVersionDetails = await FirebaseFirestore.instance
-      .collection('version')
-      .doc('newest')
-      .get();
-  Version newestVersion = Version.parse(newestVersionDetails['version']);
-  Version currentVersion = Version.parse(packageInfo.version);
-  int compareResult = newestVersion.compareTo(currentVersion);
+  // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  // DocumentSnapshot newestVersionDetails = await FirebaseFirestore.instance
+  //     .collection('version')
+  //     .doc('newest')
+  //     .get();
+  // Version newestVersion = Version.parse(newestVersionDetails['version']);
+  // Version currentVersion = Version.parse(packageInfo.version);
+  // int compareResult = newestVersion.compareTo(currentVersion);
 
   // handle initial route
   FirebaseAuth.instance.authStateChanges().listen(
     (user) async {
-      if (compareResult == 0) {
-        if (user == null || !user.emailVerified) {
-          initialRoute = Routes.loginScreen;
-        } else {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          bool? localAuth = prefs.getBool('auth_screen_enabled') ?? false;
-          if (localAuth == true) {
-            initialRoute = Routes.authScreen;
-          }
-          if (localAuth == false) {
-            initialRoute = Routes.homeScreen;
-          }
-        }
+      // if (compareResult == 0) {
+      if (user == null || !user.emailVerified) {
+        initialRoute = Routes.loginScreen;
       } else {
-        initialRoute = Routes.updateScreen;
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        bool? localAuth = prefs.getBool('auth_screen_enabled') ?? false;
+        if (localAuth == true) {
+          initialRoute = Routes.authScreen;
+        }
+        if (localAuth == false) {
+          initialRoute = Routes.homeScreen;
+        }
       }
+      // } else {
+      //   initialRoute = Routes.updateScreen;
+      // }
     },
   );
 
